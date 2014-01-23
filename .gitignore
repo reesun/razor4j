@@ -2,4 +2,4 @@
 .classpath
 .project
 bin/*
-res/db.properties
+res/*
