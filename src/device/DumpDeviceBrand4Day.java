@@ -8,9 +8,8 @@ import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import utils.DBHandler;
-import utils.DateUtils;
-import utils.handler.DateSKHandler;
-import beans.SumRegionByDay;
+import utils.handler.DataIDHandler;
+import beans.DeviceBrand;
 
 public class DumpDeviceBrand4Day {
 
@@ -19,32 +18,37 @@ public class DumpDeviceBrand4Day {
 		if (conn == null)
 			return;
 
-		ResultSetHandler<Integer> dateHandler = new DateSKHandler();
+		ResultSetHandler<Integer> dataidHandler = new DataIDHandler();
 		QueryRunner run = new QueryRunner();
 		
 		// 从fact_devicebrand中查看最大的dataid
 		String query = "SELECT MAX( dataid ) FROM razor_fact_devicebrand";
 		
-		Integer maxDataID = run.query(conn, query, dateHandler);
+		Integer maxDataID = run.query(conn, query, dataidHandler);
+		if(maxDataID == -1)
+			return ;
 
 		// 从 fact_clientdata中，dataid+1开始dump数据。
 		// 字段为 dataid, product_sk, devicebrand_sk,date_sk,deviceidentifier,is_new,isnew_channel
 		
-		query = "SELECT dataid, product_sk, devicebrand_sk, date_sk, deviceidentifier, isnew, isnew_channel "
+		query = "SELECT dataid, devicebrand_sk, date_sk, deviceidentifier, product_sk, isnew, isnew_channel "
 				+ " FROM razor_fact_clientdata WHERE dataid > ?";
 
 //		System.out.println(query);
 
-		ResultSetHandler<List<SumRegionByDay>> regionHandler = new BeanListHandler<SumRegionByDay>(
-				SumRegionByDay.class);
-		List<SumRegionByDay> regions = run.query(conn, query, regionHandler,maxDataID);
+//		ResultSetHandler<List<DeviceBrand>> deviceHandler = new BeanListHandler<DeviceBrand>(DeviceBrand.class);
+		List<DeviceBrand> deviceBrands = run.query(conn, query, new BeanListHandler<DeviceBrand>(DeviceBrand.class),maxDataID);
 
-		query = "insert into razor_fact_devicebrand (datetime,region,city,num) values (?,?,?,?)";
-
-		for (SumRegionByDay region : regions) {
+		query = "insert into razor_fact_devicebrand "
+				+ " (dataid,product_sk,devicebrand_sk,date_sk,deviceidentifier,isnew,isnew_channel) "
+				+ " values (?,?,?,?,?,?,?)";
+		for (DeviceBrand deviceBrand : deviceBrands) {
 			// System.out.println(region.getDatetime()+" "+region.getRegion()+" "+ region.getCity()+ " " + region.getNum());
-			run.update(conn, query, region.getDatetime(), region.getRegion(),
-					region.getCity(), region.getNum());
+			run.update(conn, query, 
+					deviceBrand.getDataid(), deviceBrand.getProduct_sk(), 
+					deviceBrand.getDevicebrand_sk(),deviceBrand.getDate_sk(), 
+					deviceBrand.getDeviceidentifier(),
+					deviceBrand.getIsnew(),	deviceBrand.getIsnew_channel());
 		}
 
 		System.out.println(maxDataID + " down!");
