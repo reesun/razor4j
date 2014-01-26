@@ -31,8 +31,9 @@ public class DumpDeviceBrand4Day {
 		// 从 fact_clientdata中，dataid+1开始dump数据。
 		// 字段为 dataid, product_sk, devicebrand_sk,date_sk,deviceidentifier,is_new,isnew_channel
 		
-		query = "SELECT dataid, devicebrand_sk, date_sk, deviceidentifier, product_sk, isnew, isnew_channel "
-				+ " FROM razor_fact_clientdata WHERE dataid > ?";
+		query = "SELECT dataid, devicebrand_sk, date_sk, deviceidentifier, f.product_sk, product_id, isnew, isnew_channel "
+				+ " FROM razor_fact_clientdata f join razor_dim_product p on f.product_sk = p.product_sk"
+				+ " WHERE dataid > ? ";
 
 //		System.out.println(query);
 
@@ -40,17 +41,17 @@ public class DumpDeviceBrand4Day {
 		List<DeviceBrand> deviceBrands = run.query(conn, query, new BeanListHandler<DeviceBrand>(DeviceBrand.class),maxDataID);
 
 		query = "insert into razor_fact_devicebrand "
-				+ " (dataid,product_sk,devicebrand_sk,date_sk,deviceidentifier,isnew,isnew_channel) "
-				+ " values (?,?,?,?,?,?,?)";
+				+ " (dataid,product_sk,devicebrand_sk,date_sk,deviceidentifier,isnew,isnew_channel,product_id) "
+				+ " values (?,?,?,?,?,?,?,?)";
 		for (DeviceBrand deviceBrand : deviceBrands) {
 			// System.out.println(region.getDatetime()+" "+region.getRegion()+" "+ region.getCity()+ " " + region.getNum());
 			run.update(conn, query, 
 					deviceBrand.getDataid(), deviceBrand.getProduct_sk(), 
 					deviceBrand.getDevicebrand_sk(),deviceBrand.getDate_sk(), 
-					deviceBrand.getDeviceidentifier(),
-					deviceBrand.getIsnew(),	deviceBrand.getIsnew_channel());
+					deviceBrand.getDeviceidentifier(),deviceBrand.getIsnew(),	
+					deviceBrand.getIsnew_channel(),deviceBrand.getProduct_id());
 		}
-
+		conn.close();
 		System.out.println(maxDataID + " down!");
 	}
 

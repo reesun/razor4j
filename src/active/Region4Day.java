@@ -49,7 +49,7 @@ public class Region4Day {
 			run.update(conn, query, region.getDatetime(), region.getRegion(),
 					region.getCity(), region.getNum());
 		}
-
+		conn.close();
 		System.out.println(dateValue + " down!");
 	}
 }

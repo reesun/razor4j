@@ -9,6 +9,7 @@ public class DeviceBrand implements Serializable{
 	private Integer date_sk;
 	private Integer isnew;
 	private Integer isnew_channel;
+	private Integer product_id;
 	private String deviceidentifier;
 	
 	public Integer getDataid(){
@@ -51,6 +52,13 @@ public class DeviceBrand implements Serializable{
 	}
 	public void setIsnew_channel(Integer isnew_channel){
 		this.isnew_channel = isnew_channel;
+	}
+	
+	public Integer getProduct_id(){
+		return product_id;
+	}
+	public void setProduct_id(Integer product_id){
+		this.product_id = product_id;
 	}
 	
 	public String getDeviceidentifier(){

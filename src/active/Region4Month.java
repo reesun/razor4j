@@ -49,6 +49,7 @@ public class Region4Month {
 					region.getCity(), region.getNum());
 		}
 
+		conn.close();
 		System.out.println(dateValue + " down!");
 	}
 }
