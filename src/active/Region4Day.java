@@ -26,8 +26,6 @@ public class Region4Day {
 		String dateValue = DateUtils.getYesterday();
 		Integer datesk = run.query(conn, query, dateHandler, dateValue);
 
-//		dateValue = "2014-01-24";
-//		datesk = 1486;
 		query = "SELECT '"
 				+ dateValue
 				+ "' as datetime, region, city, count(distinct(deviceidentifier)) as num "
