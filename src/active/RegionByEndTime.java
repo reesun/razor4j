@@ -66,7 +66,7 @@ public class RegionByEndTime {
 				ResultSetHandler monthRegionHandler = new BeanHandler<RegionBasic>(RegionBasic.class);
 				
 				@SuppressWarnings("unchecked")
-				RegionBasic monthRegion = run.query(conn, sql, monthRegionHandler);
+				RegionBasic monthRegion = (RegionBasic)run.query(conn, sql, monthRegionHandler);
 				
 				
 				query = "insert into razor_sum_basic_region (enddate,region,week_active,week_new,month_new,month_active,productid) values (?,?,?,?,?,?,?)";
