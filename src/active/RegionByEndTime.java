@@ -23,6 +23,9 @@ public class RegionByEndTime {
 			String fromMonth = utils.DateUtils.getBeforeDays(-30);
 			System.out.println(fromWeek + " " + fromMonth +" "+endDate);
 			
+			String query = "DELETE FROM razor_sum_basic_region WHERE enddate = '" + endDate +"'";
+			run.update(conn, query);
+			
 			ResultSetHandler<List<RegionBasic>> regionHandler = new BeanListHandler<RegionBasic>(RegionBasic.class);
 			
 			String sql = "select  '"+endDate+"' as enddate, if(l.region<>'', l.region, '其他') region,"
@@ -66,9 +69,9 @@ public class RegionByEndTime {
 				RegionBasic monthRegion = run.query(conn, sql, monthRegionHandler);
 				
 				
-				String query = "insert into razor_sum_basic_region (enddate,region,week_active,week_new,month_new,month_active,productid) values (?,?,?,?,?,?,?)";
+				query = "insert into razor_sum_basic_region (enddate,region,week_active,week_new,month_new,month_active,productid) values (?,?,?,?,?,?,?)";
 				run.update(conn, query, region.getEndDate(), region.getRegion(), region.getWeek_active(), region.getWeek_new(),
-						monthRegion.getMonth_active(),monthRegion.getMonth_new(), productid);
+						monthRegion.getMonth_new(),monthRegion.getMonth_active(), productid);
 				
 			}
 			
