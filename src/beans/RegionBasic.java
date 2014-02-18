@@ -52,6 +52,13 @@ public class RegionBasic {
 		this.month_new = month_new;
 	}
 	
+	public Integer getProductid() {
+		return productid;
+	}
+	public void setProductid(Integer productid){
+		this.productid = productid;
+	}
+	
 	public String toString(){
 		return enddate + " " + region + " " + week_active + " " + week_new + " " + month_active + " " + month_new + " " + productid; 
 	}
