@@ -10,7 +10,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import beans.RegionBasic;
 
-public class regionByEndTime {
+public class RegionByEndTime {
 	
 	public static void main(String[] args) throws Exception {
 			Connection conn = utils.DBHandler.getConnection();
