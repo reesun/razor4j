@@ -3,6 +3,7 @@ package beans;
 public class RegionBasic {
 	private String enddate;
 	private String region;
+	private String country;
 	
 	private Integer week_active;
 	private Integer week_new;
@@ -22,6 +23,13 @@ public class RegionBasic {
 	}
 	public void setRegion(String region){
 		this.region = region;
+	}
+	
+	public String getCountry(){
+		return country;
+	}
+	public void setCountry(String country){
+		this.country = country;
 	}
 	
 	public Integer getWeek_active() {
