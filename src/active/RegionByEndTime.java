@@ -23,7 +23,7 @@ public class RegionByEndTime {
 		String fromMonth = utils.DateUtils.getBeforeDays(-30);
 		System.out.println(fromWeek + " " + fromMonth + " " + endDate);
 
-		// for country
+		// for country  
 		String query = "DELETE FROM razor_sum_basic_region_country WHERE enddate = '"
 				+ endDate + "'";
 		run.update(conn, query);
